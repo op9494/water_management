@@ -1,0 +1,93 @@
+{% load static %}
+{% include "./base.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% include "./commonimport.html" %}
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="{% static 'js/index.js' %}"></script>
+        <script>
+            const params = new URLSearchParams(window.location.search)
+            const action = params.get('action')
+            $(document).ready(function () {
+                console.log("{{action}}")
+                if (action == 'login' || "{{ action }}" == 'login') {
+                    $('#registercontainer').hide()
+                    $('#adminlogincontainer').hide()
+                    $('#logincontainer').show()
+                    
+                } else if (action == 'register' || "{{ action }}" == 'register') {
+                    $('#registercontainer').show()
+                    $('#adminlogincontainer').hide()
+                    $('#logincontainer').hide()
+                    navigator.geolocation.getCurrentPosition(getLatLon)
+                }else if (action == 'admin' || "{{ action }}" == 'admin') {
+                    
+                    $('#registercontainer').hide()
+                    $('#logincontainer').hide()
+                    $('#adminlogincontainer').show()
+                }
+                
+                function getLatLon(position) {
+                    var latitude = position.coords.latitude
+                    var longitude = position.coords.longitude
+                    var location = {
+                        latitude: latitude,
+                        longitude: longitude
+                    }
+                    console.log(location)
+                    console.log(typeof location)
+                    const locatiionselector = document.getElementById('user_registeration_location')
+                    locatiionselector.value = JSON.stringify(location)
+                }
+            })
+        </script>
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <title>Document</title>
+    </head>
+    <body>
+        <div>
+            {% include "./message.html" %}
+            <div class="homecontainer">
+
+                <div id="logincontainer">
+                    <div class="hometittle">
+                        <h1>Login</h1>
+                    </div>
+                    <form action="{% url "app" %}" method="post">
+                        {% csrf_token %}
+                        {{ loginform }}
+                        <input type="submit" name="user_login" value="Submit">
+                    </form>
+
+                </div>
+                <div id="adminlogincontainer">
+                    <div class="hometittle">
+                        <h1>Admin login</h1>
+                    </div>
+                    <form action="{% url "app" %}" method="post">
+                        {% csrf_token %}
+                        {{ adminloginform }}
+                        <input type="submit" name="admin_login" value="Submit">
+                    </form>
+
+                </div>
+                <div id="registercontainer">
+                    <div class="hometittle">
+                        <h2>REGISTRATION</h2>
+                    </div>
+                    <form action="{% url "app" %}" method="post">
+                        {% csrf_token %}
+                        {{ registerForm }}
+                        <input type="submit" name="register" value="Submit">
+                    </form>
+
+
+                </div>
+            </div>
+        </body>
+    </body>
+</html>

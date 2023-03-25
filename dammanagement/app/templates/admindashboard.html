@@ -1,0 +1,153 @@
+{% load static %}
+
+
+<head>
+    {% include "./commonimport.html" %}
+    <link rel="stylesheet" href="{% static 'css/admindashboard.css' %}">
+    <script src="{% static 'js/admindashboard.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtSPxpaQgjgvENJ25UJrJ1AQkRLk7f7bU&callback=initMap&v=weekly" defer></script> -->
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <div class="hamburger__inner">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="logo">
+                    ADMIN DASHBOARD
+                </div>
+
+            </div>
+        </div>
+
+        <div class="main_container">
+            <div class="sidebar">
+                <div class="sidebar__inner">
+
+                    <ul>
+
+                        <li><a href="/admindashboard?action=adwres" id="adwres"><span class="icon"><i
+                                        class="fas fa-plus"></i></span><span class="title">Add Water Resource</span></a>
+                        </li>
+                        <li><a href="/admindashboard?action=adwreq" id="adwreq"><span class="icon"><i
+                                        class="fas fa-plus"></i></span><span class="title">Add Water
+                                    Requirement</span></a></li>
+                        <li><a href="/admindashboard?action=accountpage" id="accountpage"><span class="icon"><i
+                                        class="fas fa-user"></i></span><span class="title">Account</span></a></li>
+                        <li><a href="/admindashboard?action=logout" id="logout"><span class="icon"><i
+                                        class="fa-solid fa-right-from-bracket"></i></span><span
+                                    class="title">Logout</span></a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="container">
+                {% include "./message.html" %}
+
+
+
+                <div class="sub-continer adwres">
+                    <div class="sub-menu">
+                        <div class="sub-tittle">
+                            Add Water resource
+                        </div>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ AddwaterresourceForm }}
+                        <input type="submit" name="addwaterresource" value="Submit">
+                    </form>
+                </div>
+                <div class=" sub-continer adwreq">
+                    <div class="sub-menu">
+                        <div class="sub-tittle">
+                            Add Water requirement
+                        </div>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ AddwaterrequirementForm }}
+                        <input type="submit" name="addwaterrequirement" value="Submit">
+                    </form>
+                </div>
+
+                <div class="sub-continer accountpage">
+                    <div class="sub-menu">
+                        <div class="sub-tittle">
+                            Account
+                        </div>
+                    </div>
+                    <div class="profileview">
+                        {% if profileData.name %}
+
+                        <table id="profiletable">
+                            {% if profileData.name %}
+                            <tr>
+                                <td>Name
+                                </td>
+                                <td>{{ profileData.name }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if profileData.aadarnumber %}
+                            <tr>
+                                <td>Email
+                                </td>
+                                <td>{{ profileData.aadarnumber }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if profileData.phonenumber %}
+                            <tr>
+                                <td>Phone Number</td>
+                                <td>{{ profileData.phonenumber }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if profileData.usertype %}
+                            <tr>
+                                <td>
+                                    UserType</td>
+                                <td>{{ profileData.usertype }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if profileData.creationDate %}
+                            <tr>
+                                <td>Enrolled On</td>
+                                <td>{{ profileData.creationDate }}</td>
+                            </tr>
+                            {% endif %}
+
+
+                        </table>
+                        {% else %}
+
+                        <h5>No data found</h5>
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+
+</body>
+</head>

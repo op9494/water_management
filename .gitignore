@@ -1,0 +1,5 @@
+server/node_modules/
+farmerapp/py_env/Lib
+.vscode/launch.json
+farmerapp/farmerapp/py_env/Lib
+server/log/server.log

@@ -1,0 +1,284 @@
+{% load static %}
+{% load commantemp %}
+
+<head>
+    {% include "./commonimport.html" %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtSPxpaQgjgvENJ25UJrJ1AQkRLk7f7bU&callback=initMap&v=weekly" defer></script> -->
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <div class="hamburger__inner">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="logo">
+                    DASHBOARD
+                </div>
+                <div class="right_menu">
+                    Hello,
+                    {% if profileData.name %}
+                    {{ profileData.name }}
+                    {% else %}
+                    User
+                    {% endif %}
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="main_container">
+            <div class="sidebar">
+                <div class="sidebar__inner">
+
+                    <ul>
+                        <li><a href="/dashboard?action=viewdams" id="viewdams"><span class="icon"><i
+                                        class="fas fa-bag-shopping"></i></span><span class="title">view dams</span></a>
+                        </li>
+                        <li><a href="/dashboard?action=addeqpage" id="addeqpage"><span class="icon"><i
+                                        class="fas fa-plus"></i></span><span class="title">Add Equipements</span></a>
+                        </li>
+                        <li><a href="/dashboard?action=accountpage" id="accountpage"><span class="icon"><i
+                                        class="fas fa-user"></i></span><span class="title">Account</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container">
+                {% include "./message.html" %}
+                <div class="renteqp">
+                    <div class="sub-menu">
+                        <div class="sub-tittle">
+                            Search For Rentel Equipements
+                        </div>
+                    </div>
+                    <form method="post">
+                        <div class="formfields">
+                            {% csrf_token %}
+                            {{ searchEqupement }}
+                        </div>
+                        <div class="searchButton">
+                            <input type="submit" name="searchEqupement" value="Search">
+                    </form>
+                    <h3>Search Results</h3>
+                    <div class="searchresult">
+                        <div class="textres">
+
+                            <div class="resultcontainer">
+                                <table id="profiletable">
+                                    <th>
+                                    <td>Items</td>
+                                    <td>Applay</td>
+                                    </th>
+                                    <!-- {% if profileData.name %}
+                                                                                                    <tr>
+                                                                                                        <td>Items</td>
+                                                                                                        <td>Applay</td>
+                                                                                                    </tr>
+                                                                                                {% endif %} -->
+
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="maparea" id="map"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="viewdams">
+                <div class="sub-menu">
+
+                    <div class="sub-tittle">
+                        View Dams
+                    </div>
+                </div>
+                {% if dam_info %}
+                <table id="profiletable">
+                    <tr>
+                        <th>damname</th>
+                        <th>fulldepth</th>
+                        <th>currentdepth</th>
+                        <th>fullcapacity</th>
+                        <th>currentcapacity</th>
+                        <th>inflow</th>
+                        <th>outflow</th>
+                        <th>requirement</th>
+                        <th>dischargingdate</th>
+                    </tr>
+
+                    {% for dam in dam_info %}
+                    <tr>
+                        <td>{{ dam.damname }}</td>
+                        <td>{{ dam.fulldepth }}</td>
+                        <td>{{ dam.currentdepth }}</td>
+                        <td>{{ dam.fullcapacity }}</td>
+                        <td>{{ dam.currentcapacity }}</td>
+                        <td>{{ dam.inflow }}</td>
+                        <td>{{ dam.outflow }}</td>
+                        <td>{{ dam.requirement }}</td>
+                        <td>{{ dam.dischargingdate }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </table>
+
+
+                {% else %}
+
+                <h5>No data found</h5>
+                {% endif %}
+
+            </div>
+            <div class="equipement_list">
+                <div class="sub-menu">
+
+                    <div class="sub-tittle">
+                        View Water Resouce Details
+                    </div>
+                </div>
+                {% if waterresouces %}
+                <table id="profiletable">
+                    <tr>
+                        <th>villagename</th>
+                        <th>location</th>
+                        <th>capacity</th>
+                        <th>height</th>
+
+                    </tr>
+
+                    {% for resouce in waterresouces %}
+                    <tr>
+                        <td>{{ resouce.villagename }}</td>
+                        <td>{{ resouce.location }}</td>
+                        <td>{{ resouce.capacity }}</td>
+                        <td>{{ resouce.height }}</td>
+
+
+                    </tr>
+                    {% endfor %}
+                </table>
+
+                {% else %}
+
+                <h5>No data found</h5>
+                {% endif %}
+            </div>
+
+            <div class="accountpage">
+                <div class="sub-menu">
+                    <div class="sub-tittle">
+                        Account Details
+                    </div>
+                </div>
+                <div class="profileview">
+                    {% if profileData.name %}
+
+                    <table id="profiletable">
+                        {% if profileData.name %}
+                        <tr>
+                            <td>Name
+                            </td>
+                            <td>{{ profileData.name }}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if profileData.email %}
+                        <tr>
+                            <td>Email
+                            </td>
+                            <td>{{ profileData.email }}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if profileData.phonenumber %}
+                        <tr>
+                            <td>Phone Number</td>
+                            <td>{{ profileData.phonenumber }}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if profileData.usertype %}
+                        <tr>
+                            <td>
+                                UserType</td>
+                            <td>{{ profileData.usertype }}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if profileData.creationDate %}
+                        <tr>
+                            <td>Enrolled On</td>
+                            <td>{{ profileData.creationDate }}</td>
+                        </tr>
+                        {% endif %}
+
+
+                    </table>
+                    {% else %}
+
+                    <h5>No data found</h5>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    </div>
+
+    </div>
+    </div>
+    <!-- <script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $.ajax({
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        url: "{% url 'equipementdata' %}",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        method: 'GET',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        success: function (eqdata) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            eqdata.forEach((item, index) => {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                console.log(`${index} : ${
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    item._id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }`)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            initMap(eqdata);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    let map;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    function initMap(data) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const map = new google.maps.Map(document.getElementById('map'), {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            zoom: 4,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            center: {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lat: 51.5944418,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lng: 4.7492914
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const markers = data ?. map((i) => {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            const marker = new google.maps.Marker({
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                position: {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    lat: parseFloat(i.location.lattitudelattitude),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    lng: parseFloat(i.location.longitudelongitude)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                map: map
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </script> -->
+</body>
+</body>
+</head>
+</head>

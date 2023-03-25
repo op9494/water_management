@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% include "./commonimport.html" %}
+
+        <title>Document</title>
+        <style>
+            .homecontainer {
+                margin: 10% 25% 25%;
+                width: 50%;
+                border: solid 4px green;
+                display: flex;
+                flex-direction: column;
+            }
+            .hometittle {
+                display: flex;
+                justify-content: center;
+            }
+            .btncont {
+                display: flex;
+                justify-content: center;
+            }
+           
+        </style>
+    </head>
+    <body>
+
+        <div class="homecontainer">
+            <div class="hometittle">
+                <h1>Home page</h1>
+            </div>
+            {% include "./message.html" %}
+
+            <div class="btncont">
+                {% include "./base.html" %}
+                <button type="submit" onclick="window.location.href='main?action=login'">Login</button>
+                <button type="submit" onclick="window.location.href='main?action=register'">register</button>
+                <button type="submit" onclick="window.location.href='main?action=admin'"> Admin Login</button>
+        
+            </div>
+        </div>
+    </body>
+</html>
